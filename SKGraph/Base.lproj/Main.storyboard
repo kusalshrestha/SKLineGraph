@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SKGraph" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a5k-kB-ujW" customClass="SKGraphView" customModule="SKGraph" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="94" width="320" height="380"/>
+                                <color key="backgroundColor" red="0.35686274509803922" green="0.70980392156862748" blue="0.67450980392156867" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="380" id="Cwd-xt-wmX"/>
+                                </constraints>
+                            </view>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hUK-RA-9hx">
+                                <rect key="frame" x="136" y="517" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switchAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="Qkg-eL-GY7"/>
+                                </connections>
+                            </switch>
+                        </subviews>
+                        <color key="backgroundColor" red="0.59999999999999998" green="0.72941176470588232" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="hUK-RA-9hx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4pG-4F-m7g"/>
+                            <constraint firstItem="a5k-kB-ujW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6Bc-An-DGw"/>
+                            <constraint firstItem="a5k-kB-ujW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8ZV-Xw-eh0"/>
+                            <constraint firstItem="a5k-kB-ujW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="FDm-ja-A0W"/>
+                            <constraint firstAttribute="trailing" secondItem="a5k-kB-ujW" secondAttribute="trailing" id="uT3-BQ-4LF"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hUK-RA-9hx" secondAttribute="bottom" constant="20" id="vt6-CY-yZ7"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="skGraph" destination="a5k-kB-ujW" id="KAE-We-k8C"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="245" y="307"/>
+        </scene>
+    </scenes>
+</document>
