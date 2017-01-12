@@ -43,7 +43,7 @@ class SKGraphView: UIView {
 // MARK:- Colors
     var lineStrokeColor: UIColor = UIColor.whiteColor()
     var graphLineColor: UIColor = UIColor(hex: 0xFFFFFF, alpha: 0.4)
-
+    var graphMeanLineColor: UIColor = UIColor.greenColor()
 
     var xStart: CGFloat!
     var yStart: CGFloat!
@@ -54,6 +54,8 @@ class SKGraphView: UIView {
     var yInterval: CGFloat!
     
     var dotPointsLayers = [DotMarker]()
+    
+    var meanData: Double?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -84,6 +86,7 @@ class SKGraphView: UIView {
         drawDataLabels()
         drawPoints()
         drawLineJoiningPoints()
+        drawMeanLine()
     }
     
     func drawLineJoiningPoints() {
@@ -189,6 +192,18 @@ class SKGraphView: UIView {
             }
             text.drawInRect(rect, withAttributes: attrib)
         }
+    }
+    
+    func drawMeanLine() {
+        let xpath = UIBezierPath()
+        let lastNumberInSet = dataManager.yDataLabels[dataManager.yDataLabels.count - 1].digitsOnly()
+        let firstNumberInSet = dataManager.yDataLabels[0].digitsOnly()
+        guard let meanValue = meanData else { return }
+        xpath.moveToPoint(CGPoint(x: xStart - linePadding, y: yStart - (CGFloat((meanValue - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1)))
+        xpath.addLineToPoint(CGPoint(x:xEnd + linePadding, y: yStart - (CGFloat((meanValue - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1)))
+    
+        graphMeanLineColor.setStroke()
+        xpath.stroke()
     }
  
 }

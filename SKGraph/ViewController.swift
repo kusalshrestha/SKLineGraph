@@ -21,6 +21,7 @@ class ViewController: UIViewController {
                                      mainTitle: "SKGraph")
         let firstDataSet = SKData(dataSet: [85, 80, 65, 75, 90, 95, 100])
         manager.datas = [firstDataSet]
+        skGraph.meanData = 78
         skGraph.dataManager = manager
     }
     
