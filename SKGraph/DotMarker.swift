@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class DotLayer: CAShapeLayer {
+class DotMarker: CAShapeLayer {
     
     var layerBorderColor = UIColor.whiteColor()
     var layerFillColor = UIColor.clearColor()

@@ -39,4 +39,13 @@ extension NSString {
         CGContextConcatCTM(context, CGAffineTransformInvert(t))
     }
     
+    
+    func digitsOnly() -> Double {
+        let stringArray = self.componentsSeparatedByCharactersInSet(
+            NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+        let newString = stringArray.joinWithSeparator("")
+        
+        return Double(newString) ?? 0.0
+    }
+    
 }

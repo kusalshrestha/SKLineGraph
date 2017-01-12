@@ -21,6 +21,7 @@ class SKGraphView: UIView {
         }
     }
     
+// MARK: - Titles
     var mainTitle: String = "SKGraph" {
         didSet {
             setNeedsDisplay()
@@ -38,6 +39,11 @@ class SKGraphView: UIView {
             setNeedsDisplay()
         }
     }
+    
+// MARK:- Colors
+    var lineStrokeColor: UIColor = UIColor.whiteColor()
+    var graphLineColor: UIColor = UIColor(hex: 0xFFFFFF, alpha: 0.4)
+
 
     var xStart: CGFloat!
     var yStart: CGFloat!
@@ -47,12 +53,10 @@ class SKGraphView: UIView {
     var xInterval: CGFloat!
     var yInterval: CGFloat!
     
-    var dotPointsLayers = [DotLayer]()
+    var dotPointsLayers = [DotMarker]()
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        configureStartAndEndPoints()
     }
     
     convenience init(withDataManager manager: SKGraphManager) {
@@ -67,7 +71,7 @@ class SKGraphView: UIView {
         }
         for datas in dataManager.datas {
             for _ in  datas.dataSet {
-                let dot = DotLayer(strokeColor: UIColor.whiteColor(), fillColor: UIColor(hex: 0x5BB5AC), selected: false)//(color: UIColor.whiteColor(), selected: false)
+                let dot = DotMarker(strokeColor: lineStrokeColor, fillColor: backgroundColor ?? UIColor.grayColor(), selected: false)
                 dotPointsLayers.append(dot)
                 layer.addSublayer(dot)
             }
@@ -83,25 +87,27 @@ class SKGraphView: UIView {
     }
     
     func drawLineJoiningPoints() {
-        guard dataManager.datas.first!.dataSet.count <= dataManager.xDataLabels.count else {
+        guard dataManager.datas[0].dataSet.count <= dataManager.xDataLabels.count else {
             return
         }
-        for i in 0...dataManager.datas.first!.dataSet.count - 1 {
-            if i != dataManager.datas.first!.dataSet.count - 1 {
+        for i in 0...dataManager.datas[0].dataSet.count - 1 {
+            if i != dataManager.datas[0].dataSet.count - 1 {
                 let startPoint = dotPointsLayers[i].center
                 let endPoint = dotPointsLayers[i + 1].center
-                DotLayer.drawLinesBetweenTwoPoints(startPoint, endPoint: endPoint)
+                DotMarker.drawLinesBetweenTwoPoints(startPoint, endPoint: endPoint)
             }
         }
     }
     
     func drawPoints() {
-        guard dataManager.datas.first!.dataSet.count <= dataManager.xDataLabels.count else {
+        guard dataManager.datas[0].dataSet.count <= dataManager.xDataLabels.count else {
             return
         }
         for i in 0...(dotPointsLayers.count - 1) {
             let dot = dotPointsLayers[i]
-            dot.center = CGPoint(x: xStart + CGFloat(i) * xInterval, y: yStart - CGFloat(dataManager.datas.first!.dataSet[i] / dataManager.highestData) * yInterval * 6)
+            let lastNumberInSet = dataManager.yDataLabels[dataManager.yDataLabels.count - 1].digitsOnly()
+            let firstNumberInSet = dataManager.yDataLabels[0].digitsOnly()
+            dot.center = CGPoint(x: xStart + CGFloat(i) * xInterval, y: yStart - (CGFloat((dataManager.datas[0].dataSet[i] - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1))
         }
     }
     
@@ -116,12 +122,14 @@ class SKGraphView: UIView {
     }
     
     func drawTitleLabels() {
-        let fieldFont = UIFont(name: "Helvetica Neue", size: 14)
+        let fieldFont = UIFont.systemFontOfSize(14)
         
-        "Hours".drawText(CGPointMake(16, bounds.height / 2), angle: CGFloat(-M_PI_2), font: fieldFont!)
+        dataManager.yTitle.drawText(CGPointMake(16, bounds.height / 2), angle: CGFloat(-M_PI_2), font: fieldFont)
 
-        "Days".drawText(CGPointMake(bounds.width / 2, bounds.height - 14 - 16), angle: CGFloat(0), font: fieldFont!)
-    }
+        dataManager.xTitle.drawText(CGPointMake(bounds.width / 2, bounds.height - 14 - 16), angle: CGFloat(0), font: fieldFont)
+
+        dataManager.mainTitle.drawText(CGPointMake(bounds.width / 2, 44), angle: CGFloat(0), font: fieldFont)
+}
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -147,7 +155,7 @@ class SKGraphView: UIView {
             xpath.moveToPoint(CGPoint(x: xStart - linePadding, y: yStart - CGFloat(i) * yInterval))
             xpath.addLineToPoint(CGPoint(x:xEnd + linePadding, y: yStart - CGFloat(i) * yInterval))
         }
-        UIColor(hex: 0xB8E1DF).setStroke()
+        graphLineColor.setStroke()
         xpath.stroke()
     }
     
@@ -158,7 +166,7 @@ class SKGraphView: UIView {
             ypath.moveToPoint(CGPoint(x: xStart + CGFloat(i) * xInterval, y: yStart + linePadding))
             ypath.addLineToPoint(CGPoint(x:xStart + CGFloat(i) * xInterval, y: yEnd - linePadding))
         }
-        UIColor(hex: 0xB8E1DF).setStroke()
+        graphLineColor.setStroke()
         ypath.stroke()
     }
     

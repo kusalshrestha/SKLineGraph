@@ -15,10 +15,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let manager = SKGraphManager(withDataLabels: ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"], xTitle: "Days", yTitle: "Hours", mainTitle: "SKGraph")
-        let firstDataSet = SKData(dataSet: [1, 5, 3, 8, 2, 24, 1])
+        let manager = SKGraphManager(withXDataLabels: ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"],
+                                     ylabels: ["65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
+                                     xTitle: "Days",
+                                     mainTitle: "SKGraph")
+        let firstDataSet = SKData(dataSet: [85, 80, 65, 75, 90, 95, 100])
         manager.datas = [firstDataSet]
-        skGraph.dataManager = manager        
+        skGraph.dataManager = manager
     }
     
     @IBAction func switchAction(sender: UISwitch) {

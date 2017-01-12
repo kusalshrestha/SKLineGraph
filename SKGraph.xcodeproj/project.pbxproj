@@ -18,7 +18,7 @@
 		94720F561D62DDF4001F04B0 /* SKGraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94720F551D62DDF4001F04B0 /* SKGraphTests.swift */; };
 		94720F611D62DDF4001F04B0 /* SKGraphUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94720F601D62DDF4001F04B0 /* SKGraphUITests.swift */; };
 		94720F741D62EE47001F04B0 /* SKGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94720F731D62EE47001F04B0 /* SKGraphView.swift */; };
-		94BEC8391D674F63006DD4B6 /* DotLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BEC8381D674F63006DD4B6 /* DotLayer.swift */; };
+		94BEC8391D674F63006DD4B6 /* DotMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BEC8381D674F63006DD4B6 /* DotMarker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +56,7 @@
 		94720F601D62DDF4001F04B0 /* SKGraphUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKGraphUITests.swift; sourceTree = "<group>"; };
 		94720F621D62DDF4001F04B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		94720F731D62EE47001F04B0 /* SKGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKGraphView.swift; sourceTree = "<group>"; };
-		94BEC8381D674F63006DD4B6 /* DotLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotLayer.swift; sourceTree = "<group>"; };
+		94BEC8381D674F63006DD4B6 /* DotMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotMarker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,7 +113,7 @@
 				940E88F11D740503008169B1 /* NSString+Extension.swift */,
 				94720F731D62EE47001F04B0 /* SKGraphView.swift */,
 				945A7DD31D697DE200661628 /* SKGraphManager.swift */,
-				94BEC8381D674F63006DD4B6 /* DotLayer.swift */,
+				94BEC8381D674F63006DD4B6 /* DotMarker.swift */,
 				94720F441D62DDF4001F04B0 /* Main.storyboard */,
 				94720F471D62DDF4001F04B0 /* Assets.xcassets */,
 				94720F491D62DDF4001F04B0 /* LaunchScreen.storyboard */,
@@ -208,6 +208,7 @@
 				TargetAttributes = {
 					94720F3C1D62DDF4001F04B0 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = N7DN9W93BF;
 					};
 					94720F501D62DDF4001F04B0 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -274,7 +275,7 @@
 				945A7DD41D697DE200661628 /* SKGraphManager.swift in Sources */,
 				94720F431D62DDF4001F04B0 /* ViewController.swift in Sources */,
 				940E88F21D740503008169B1 /* NSString+Extension.swift in Sources */,
-				94BEC8391D674F63006DD4B6 /* DotLayer.swift in Sources */,
+				94BEC8391D674F63006DD4B6 /* DotMarker.swift in Sources */,
 				94720F411D62DDF4001F04B0 /* AppDelegate.swift in Sources */,
 				94720F741D62EE47001F04B0 /* SKGraphView.swift in Sources */,
 				941B567F1D632915007AD219 /* UIColor+Extensions.swift in Sources */,
@@ -421,10 +422,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SKGraph/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lftechnology.SKGraph;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -432,10 +436,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SKGraph/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lftechnology.SKGraph;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

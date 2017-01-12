@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SKGraph/SKGraphView.swift"
-            timestampString = "494167994.53947"
+            timestampString = "505918972.670287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "drawRect(_:)"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "drawPoints()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
