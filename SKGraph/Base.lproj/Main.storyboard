@@ -24,12 +24,21 @@
                                     <constraint firstAttribute="height" constant="400" id="Cwd-xt-wmX"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjG-vU-Zj7">
+                                <rect key="frame" x="122" y="530" width="76" height="30"/>
+                                <state key="normal" title="load points"/>
+                                <connections>
+                                    <action selector="btnPress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qUS-vT-HIY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.59999999999999998" green="0.72941176470588232" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="a5k-kB-ujW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6Bc-An-DGw"/>
                             <constraint firstItem="a5k-kB-ujW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8ZV-Xw-eh0"/>
                             <constraint firstItem="a5k-kB-ujW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="FDm-ja-A0W"/>
+                            <constraint firstItem="bjG-vU-Zj7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NHn-l5-cHL"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bjG-vU-Zj7" secondAttribute="bottom" constant="8" id="hKa-UP-gTY"/>
                             <constraint firstAttribute="trailing" secondItem="a5k-kB-ujW" secondAttribute="trailing" id="uT3-BQ-4LF"/>
                         </constraints>
                     </view>

@@ -16,6 +16,7 @@ class SKGraphView: UIView {
     
     var dataManager = SKGraphManager() {
         didSet {
+            dataManager.delegate = self
             createPoints()
             setNeedsDisplay()
         }
@@ -68,9 +69,14 @@ class SKGraphView: UIView {
     }
     
     func createPoints() {
+        guard dataManager.datas.count != 0 else { return }
         guard dataManager.datas.count <= dataManager.xDataLabels.count else {
             return
         }
+        for dot in dotPointsLayers {
+            dot.removeFromSuperlayer()
+        }
+        dotPointsLayers = [DotMarker]()
         for datas in dataManager.datas {
             for _ in  datas.dataSet {
                 let dot = DotMarker(strokeColor: lineStrokeColor, fillColor: backgroundColor ?? UIColor.grayColor(), selected: false)
@@ -90,6 +96,7 @@ class SKGraphView: UIView {
     }
     
     func drawLineJoiningPoints() {
+        guard dataManager.datas.count != 0 else { return }
         guard dataManager.datas[0].dataSet.count <= dataManager.xDataLabels.count else {
             return
         }
@@ -103,6 +110,7 @@ class SKGraphView: UIView {
     }
     
     func drawPoints() {
+        guard dataManager.datas.count != 0 else { return }
         guard dataManager.datas[0].dataSet.count <= dataManager.xDataLabels.count else {
             return
         }
@@ -206,4 +214,13 @@ class SKGraphView: UIView {
         xpath.stroke()
     }
  
+}
+
+extension SKGraphView: SKGraphDataDelegate {
+    
+    func loadData() {
+        createPoints()
+        setNeedsDisplay()
+    }
+    
 }

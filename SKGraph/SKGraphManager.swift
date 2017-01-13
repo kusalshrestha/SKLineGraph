@@ -8,12 +8,17 @@
 
 import Foundation
 
+protocol SKGraphDataDelegate: NSObjectProtocol {
+    func loadData()
+}
+
 struct SKData {
     var dataSet = [Double]()
 }
 
 class SKGraphManager {
     
+    weak var delegate: SKGraphDataDelegate?
     var datas = [SKData]() {
         didSet {
             // calculate min max from each set.... MAke a new set from them and recalculate their min max value
@@ -34,6 +39,7 @@ class SKGraphManager {
             let minMax = calculateMinMax(labelArray)
             lowestData = minMax.min
             highestData = minMax.max
+            delegate?.loadData()
         }
     }
     

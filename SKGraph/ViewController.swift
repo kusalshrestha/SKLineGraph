@@ -11,11 +11,12 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet var skGraph: SKGraphView!
+    var manager: SKGraphManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let manager = SKGraphManager(withXDataLabels: ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"],
+        manager = SKGraphManager(withXDataLabels: ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"],
                                      ylabels: ["65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
                                      xTitle: "Days",
                                      mainTitle: "SKGraph")
@@ -25,7 +26,9 @@ class ViewController: UIViewController {
         skGraph.dataManager = manager
     }
     
-    @IBAction func switchAction(sender: UISwitch) {
+    @IBAction func btnPress(sender: UIButton) {
+        let firstDataSet = SKData(dataSet: [70, 80, 90, 75, 70, 80, 100])
+        manager.datas = [firstDataSet]
     }
 
     override func didReceiveMemoryWarning() {
