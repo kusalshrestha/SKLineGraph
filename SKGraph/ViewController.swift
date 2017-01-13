@@ -20,15 +20,16 @@ class ViewController: UIViewController {
                                      ylabels: ["65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
                                      xTitle: "Days",
                                      mainTitle: "SKGraph")
-        let firstDataSet = SKData(dataSet: [85, 80, 65, 75, 90, 95, 100])
-        manager.datas = [firstDataSet]
-        skGraph.meanData = 78
+//        let firstDataSet = SKData(dataSet: [85, 80, 65, 75, 90, 95, 100])
+//        manager.datas = [firstDataSet]
+//        skGraph.meanData = 78
         skGraph.dataManager = manager
     }
     
     @IBAction func btnPress(sender: UIButton) {
         let firstDataSet = SKData(dataSet: [70, 80, 90, 75, 70, 80, 100])
         manager.datas = [firstDataSet]
+        skGraph.meanData = 78
     }
 
     override func didReceiveMemoryWarning() {
