@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias yAxisData = (dataToShow: String, actualdata: Double)
+
 protocol SKGraphDataDelegate: NSObjectProtocol {
     func loadData()
 }
@@ -32,19 +34,19 @@ class SKGraphManager {
             let finalMinMax = calculateMinMax(newSampleDataSet)
             lowestData = finalMinMax.min
             highestData = finalMinMax.max*/
-            var labelArray = [Double]()
+            var labelArray = [yAxisData]()
             for label in yDataLabels {
-                labelArray.append(label.digitsOnly())
+                labelArray.append(label)
             }
-            let minMax = calculateMinMax(labelArray)
-            lowestData = minMax.min
-            highestData = minMax.max
+//            let minMax = calculateMinMax(labelArray)
+//            lowestData = minMax.min
+//            highestData = minMax.max
             delegate?.loadData()
         }
     }
     
     var xDataLabels = [String]()
-    var yDataLabels = [String]()//["0", "4", "8", "12", "16", "20", "24"]
+    var yDataLabels = [yAxisData]()//["0", "4", "8", "12", "16", "20", "24"]
     
     var xTitle = ""
     var yTitle = ""
@@ -66,11 +68,11 @@ class SKGraphManager {
     
     var lowestPoint: Double!
     var highestPoint: Double!
-//    var meanData: Double?
+    var meanData: Double?
     
     init() {}
     
-    init(withXDataLabels xlabels: [String], ylabels: [String], xTitle: String = "", yTitle: String = "", mainTitle: String = "") {
+    init(withXDataLabels xlabels: [String], ylabels: [yAxisData], xTitle: String = "", yTitle: String = "", mainTitle: String = "") {
         xDataLabels = xDataLabels + xlabels
         yDataLabels = yDataLabels + ylabels
         

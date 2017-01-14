@@ -139,16 +139,8 @@ class SKGraphView: UIView {
         guard dataManager.datas[0].dataSet.count <= dataManager.xDataLabels.count else {
             return
         }
-        let lastNumberInSet = dataManager.yDataLabels[dataManager.yDataLabels.count - 1].digitsOnly()
-        var firstNumberInSet = dataManager.yDataLabels[0].digitsOnly()
-        if dataManager.yDataLabels[0].isEmpty {
-            let secondNumber = dataManager.yDataLabels[1].digitsOnly()
-            let fourthNumber = dataManager.yDataLabels[3].digitsOnly()
-            let delta = (fourthNumber - secondNumber) / 2
-            firstNumberInSet = secondNumber - delta
-        } else {
-            firstNumberInSet = dataManager.yDataLabels[0].digitsOnly()
-        }
+        let lastNumberInSet = dataManager.yDataLabels[dataManager.yDataLabels.count - 1].actualdata
+        let firstNumberInSet = dataManager.yDataLabels[0].actualdata
         for i in 0...(dotPointsLayers.count - 1) {
             let dot = dotPointsLayers[i]
             dot.center = CGPoint(x: xStart + CGFloat(i) * xInterval, y: yStart - (CGFloat((dataManager.datas[0].dataSet[i] - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1))
@@ -161,8 +153,15 @@ class SKGraphView: UIView {
     }
     
     private func drawDataLabels() {
+        // X data labels
         drawTextLabels(dataManager.xDataLabels, isVerticalLabels: false)
-        drawTextLabels(dataManager.yDataLabels, isVerticalLabels: true)
+        
+        // Y data labels
+        var yDataLabel = [String]()
+        for data in dataManager.yDataLabels {
+            yDataLabel.append(data.dataToShow)
+        }
+        drawTextLabels(yDataLabel, isVerticalLabels: true)
     }
     
     private func drawTitleLabels() {
@@ -238,8 +237,8 @@ class SKGraphView: UIView {
     private func drawMeanLine() {
         guard let _ = meanDataInPercentage else { return }
         meanLine = UIBezierPath()
-        let lastNumberInSet = dataManager.yDataLabels[dataManager.yDataLabels.count - 1].digitsOnly()
-        let firstNumberInSet = dataManager.yDataLabels[0].digitsOnly()
+        let lastNumberInSet = dataManager.yDataLabels[dataManager.yDataLabels.count - 1].actualdata
+        let firstNumberInSet = dataManager.yDataLabels[0].actualdata
         guard let meanValue = meanDataInPercentage else { return }
         meanLine.moveToPoint(CGPoint(x: xStart - linePadding, y: yStart - (CGFloat((meanValue - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1)))
         meanLine.addLineToPoint(CGPoint(x:xEnd + linePadding, y: yStart - (CGFloat((meanValue - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1)))

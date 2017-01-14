@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         let manager = SKGraphManager(withXDataLabels: ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"],
-                                     ylabels: ["", "70%", "", "80%", "", "90%", "", "100%"],
+                                     ylabels: [("", 0), ("20 min", 20), ("", 40), ("1 hr", 60), ("", 80), ("", 100), ("2 hrs", 120)],
                                      xTitle: "Days",
                                      mainTitle: "SKGraph")
         let firstDataSet = SKData(dataSet: [85, 80, 65, 75, 90, 95, 100])
@@ -27,8 +27,7 @@ class ViewController: UIViewController {
     
     @IBAction func btnPress(sender: UIButton) {
         let manager = SKGraphManager(withXDataLabels: ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"],
-                                 ylabels: ["0%", "", "20%", "", "40%", "", "60%", "", "80%", "", "100%"],
-                                 xTitle: "Days",
+                                 ylabels: [("", 65), ("70%", 70), ("", 75), ("80%", 80), ("", 85), ("90%", 90), ("", 95), ("100%", 100)],                                 xTitle: "Days",
                                  mainTitle: "SKGraph")
         let firstDataSet = SKData(dataSet: [75, 90, 95, 85, 70, 75, 100])
         manager.datas = [firstDataSet]
