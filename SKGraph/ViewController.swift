@@ -11,25 +11,29 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet var skGraph: SKGraphView!
-    var manager: SKGraphManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        manager = SKGraphManager(withXDataLabels: ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"],
-                                     ylabels: ["65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
+        let manager = SKGraphManager(withXDataLabels: ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"],
+                                     ylabels: ["", "70%", "", "80%", "", "90%", "", "100%"],
                                      xTitle: "Days",
                                      mainTitle: "SKGraph")
-//        let firstDataSet = SKData(dataSet: [85, 80, 65, 75, 90, 95, 100])
-//        manager.datas = [firstDataSet]
-//        skGraph.meanData = 78
+        let firstDataSet = SKData(dataSet: [85, 80, 65, 75, 90, 95, 100])
+        manager.datas = [firstDataSet]
+        skGraph.meanDataInPercentage = 50
         skGraph.dataManager = manager
     }
     
     @IBAction func btnPress(sender: UIButton) {
-        let firstDataSet = SKData(dataSet: [70, 80, 90, 75, 70, 80, 100])
+        let manager = SKGraphManager(withXDataLabels: ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"],
+                                 ylabels: ["0%", "", "20%", "", "40%", "", "60%", "", "80%", "", "100%"],
+                                 xTitle: "Days",
+                                 mainTitle: "SKGraph")
+        let firstDataSet = SKData(dataSet: [75, 90, 95, 85, 70, 75, 100])
         manager.datas = [firstDataSet]
-        skGraph.meanData = 78
+        skGraph.meanDataInPercentage = nil
+        skGraph.dataManager = manager
     }
 
     override func didReceiveMemoryWarning() {

@@ -17,6 +17,7 @@ class SKGraphView: UIView {
     var dataManager = SKGraphManager() {
         didSet {
             dataManager.delegate = self
+            clearDrawing()
             createPoints()
             setNeedsDisplay()
         }
@@ -56,8 +57,15 @@ class SKGraphView: UIView {
     
     var dotPointsLayers = [DotMarker]()
     
-    var meanData: Double?
+    var meanDataInPercentage: Double?
     
+    
+    var xpath: UIBezierPath!
+    var ypath: UIBezierPath!
+    var meanLine: UIBezierPath!
+    var collectiveDotLayer = CALayer()
+    var collectiveLinePath = [UIBezierPath]()
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -68,7 +76,44 @@ class SKGraphView: UIView {
         configureStartAndEndPoints()
     }
     
-    func createPoints() {
+    override func drawRect(rect: CGRect) {
+        drawLines()
+        positionPoints()
+        drawDataLabels()
+        drawTitleLabels()
+        drawLineJoiningPoints()
+        drawMeanLine()
+    }
+    
+    func clearDrawing() {
+        xpath = nil
+        ypath = nil
+        meanLine = nil
+        collectiveDotLayer.removeFromSuperlayer()
+        for var linePath in collectiveLinePath {
+            linePath = UIBezierPath()
+        }
+        setNeedsDisplay()
+    }
+    
+    private func drawLineJoiningPoints() {
+        guard dataManager.datas.count != 0 else { return }
+        guard dataManager.datas[0].dataSet.count <= dataManager.xDataLabels.count else {
+            return
+        }
+        var collectiveLine = [UIBezierPath]()
+        for i in 0...dataManager.datas[0].dataSet.count - 1 {
+            if i != dataManager.datas[0].dataSet.count - 1 {
+                let startPoint = dotPointsLayers[i].center
+                let endPoint = dotPointsLayers[i + 1].center
+                let line = DotMarker.drawLinesBetweenTwoPoints(startPoint, endPoint: endPoint)
+                collectiveLine.append(line)
+            }
+        }
+        collectiveLinePath = collectiveLine
+    }
+    
+    private func createPoints() {
         guard dataManager.datas.count != 0 else { return }
         guard dataManager.datas.count <= dataManager.xDataLabels.count else {
             return
@@ -77,62 +122,50 @@ class SKGraphView: UIView {
             dot.removeFromSuperlayer()
         }
         dotPointsLayers = [DotMarker]()
+        let collectiveLayers = CALayer()
         for datas in dataManager.datas {
             for _ in  datas.dataSet {
                 let dot = DotMarker(strokeColor: lineStrokeColor, fillColor: backgroundColor ?? UIColor.grayColor(), selected: false)
                 dotPointsLayers.append(dot)
-                layer.addSublayer(dot)
+                collectiveLayers.addSublayer(dot)
             }
         }
+        collectiveDotLayer = collectiveLayers
+        layer.addSublayer(collectiveDotLayer)
     }
     
-    override func drawRect(rect: CGRect) {
-        drawTitleLabels()
-        drawLines()
-        drawDataLabels()
-        drawPoints()
-        drawLineJoiningPoints()
-        drawMeanLine()
-    }
-    
-    func drawLineJoiningPoints() {
+    private func positionPoints() {
         guard dataManager.datas.count != 0 else { return }
         guard dataManager.datas[0].dataSet.count <= dataManager.xDataLabels.count else {
             return
         }
-        for i in 0...dataManager.datas[0].dataSet.count - 1 {
-            if i != dataManager.datas[0].dataSet.count - 1 {
-                let startPoint = dotPointsLayers[i].center
-                let endPoint = dotPointsLayers[i + 1].center
-                DotMarker.drawLinesBetweenTwoPoints(startPoint, endPoint: endPoint)
-            }
-        }
-    }
-    
-    func drawPoints() {
-        guard dataManager.datas.count != 0 else { return }
-        guard dataManager.datas[0].dataSet.count <= dataManager.xDataLabels.count else {
-            return
+        let lastNumberInSet = dataManager.yDataLabels[dataManager.yDataLabels.count - 1].digitsOnly()
+        var firstNumberInSet = dataManager.yDataLabels[0].digitsOnly()
+        if dataManager.yDataLabels[0].isEmpty {
+            let secondNumber = dataManager.yDataLabels[1].digitsOnly()
+            let fourthNumber = dataManager.yDataLabels[3].digitsOnly()
+            let delta = (fourthNumber - secondNumber) / 2
+            firstNumberInSet = secondNumber - delta
+        } else {
+            firstNumberInSet = dataManager.yDataLabels[0].digitsOnly()
         }
         for i in 0...(dotPointsLayers.count - 1) {
             let dot = dotPointsLayers[i]
-            let lastNumberInSet = dataManager.yDataLabels[dataManager.yDataLabels.count - 1].digitsOnly()
-            let firstNumberInSet = dataManager.yDataLabels[0].digitsOnly()
             dot.center = CGPoint(x: xStart + CGFloat(i) * xInterval, y: yStart - (CGFloat((dataManager.datas[0].dataSet[i] - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1))
         }
     }
     
-    func drawLines() {
+    private func drawLines() {
         drawXLines()
         drawYLines()
     }
     
-    func drawDataLabels() {
+    private func drawDataLabels() {
         drawTextLabels(dataManager.xDataLabels, isVerticalLabels: false)
         drawTextLabels(dataManager.yDataLabels, isVerticalLabels: true)
     }
     
-    func drawTitleLabels() {
+    private func drawTitleLabels() {
         let fieldFont = UIFont.systemFontOfSize(14)
         
         dataManager.yTitle.drawText(CGPointMake(16, bounds.height / 2), angle: CGFloat(-M_PI_2), font: fieldFont)
@@ -140,7 +173,7 @@ class SKGraphView: UIView {
         dataManager.xTitle.drawText(CGPointMake(bounds.width / 2, bounds.height - 14 - 16), angle: CGFloat(0), font: fieldFont)
 
         dataManager.mainTitle.drawText(CGPointMake(bounds.width / 2, 44), angle: CGFloat(0), font: fieldFont)
-}
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -149,7 +182,7 @@ class SKGraphView: UIView {
         setNeedsDisplay()
     }
     
-    func configureStartAndEndPoints() {
+    private func configureStartAndEndPoints() {
         xStart = 65
         yStart = bounds.height - 85
         xEnd = bounds.width - 40
@@ -159,8 +192,8 @@ class SKGraphView: UIView {
         yInterval = abs(yStart - yEnd) / CGFloat(dataManager.yDataLabels.count - 1)
     }
     
-    func drawXLines() {
-        let xpath = UIBezierPath()
+    private func drawXLines() {
+        xpath = UIBezierPath()
     
         for i in 0...(dataManager.yDataLabels.count - 1) {
             xpath.moveToPoint(CGPoint(x: xStart - linePadding, y: yStart - CGFloat(i) * yInterval))
@@ -170,8 +203,8 @@ class SKGraphView: UIView {
         xpath.stroke()
     }
     
-    func drawYLines() {
-        let ypath = UIBezierPath()
+    private func drawYLines() {
+        ypath = UIBezierPath()
         
         for i in 0...(dataManager.xDataLabels.count - 1) {
             ypath.moveToPoint(CGPoint(x: xStart + CGFloat(i) * xInterval, y: yStart + linePadding))
@@ -181,7 +214,7 @@ class SKGraphView: UIView {
         ypath.stroke()
     }
     
-    func drawTextLabels(textLabels: [String], isVerticalLabels: Bool) {
+    private func drawTextLabels(textLabels: [String], isVerticalLabels: Bool) {
         for i in 0...textLabels.count - 1 {
             let text = textLabels[i]
             let myString: NSString = text as NSString
@@ -202,16 +235,17 @@ class SKGraphView: UIView {
         }
     }
     
-    func drawMeanLine() {
-        let xpath = UIBezierPath()
+    private func drawMeanLine() {
+        guard let _ = meanDataInPercentage else { return }
+        meanLine = UIBezierPath()
         let lastNumberInSet = dataManager.yDataLabels[dataManager.yDataLabels.count - 1].digitsOnly()
         let firstNumberInSet = dataManager.yDataLabels[0].digitsOnly()
-        guard let meanValue = meanData else { return }
-        xpath.moveToPoint(CGPoint(x: xStart - linePadding, y: yStart - (CGFloat((meanValue - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1)))
-        xpath.addLineToPoint(CGPoint(x:xEnd + linePadding, y: yStart - (CGFloat((meanValue - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1)))
+        guard let meanValue = meanDataInPercentage else { return }
+        meanLine.moveToPoint(CGPoint(x: xStart - linePadding, y: yStart - (CGFloat((meanValue - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1)))
+        meanLine.addLineToPoint(CGPoint(x:xEnd + linePadding, y: yStart - (CGFloat((meanValue - firstNumberInSet) / (lastNumberInSet - firstNumberInSet))) * yInterval * CGFloat(dataManager.yDataLabels.count - 1)))
     
         graphMeanLineColor.setStroke()
-        xpath.stroke()
+        meanLine.stroke()
     }
  
 }

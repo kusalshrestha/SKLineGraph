@@ -76,13 +76,14 @@ class DotMarker: CAShapeLayer {
         super.layoutSublayers()
     }
     
-    class func drawLinesBetweenTwoPoints(startPoint: CGPoint, endPoint: CGPoint) {
+    class func drawLinesBetweenTwoPoints(startPoint: CGPoint, endPoint: CGPoint) -> UIBezierPath {
         let path = UIBezierPath()
         path.moveToPoint(startPoint)
         path.addLineToPoint(endPoint)
         path.lineWidth = 2
         UIColor.whiteColor().setStroke()
         path.stroke()
+        return path
     }
     
 }

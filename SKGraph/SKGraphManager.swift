@@ -66,7 +66,8 @@ class SKGraphManager {
     
     var lowestPoint: Double!
     var highestPoint: Double!
-        
+//    var meanData: Double?
+    
     init() {}
     
     init(withXDataLabels xlabels: [String], ylabels: [String], xTitle: String = "", yTitle: String = "", mainTitle: String = "") {
@@ -80,8 +81,8 @@ class SKGraphManager {
     
     // Calculates minimum and maximum values from an Array
     private func calculateMinMax(dataSet: [Double]) -> (min: Double, max: Double) {
-        var min: Double = dataSet.first!
-        var max: Double = dataSet.first!
+        var min: Double = dataSet[0]
+        var max: Double = dataSet[0]
         
         for skData in datas {
             for data in skData.dataSet {
